@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AOC.2021\AOC.2021.csproj" />
+    <ProjectReference Include="..\AOC.Helper\AOC.Helper.csproj" />
+  </ItemGroup>
+
+</Project>
