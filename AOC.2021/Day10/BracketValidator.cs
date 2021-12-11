@@ -38,9 +38,7 @@ namespace AOC._2021.Day10
                 if (sign == bracketsDic[stack.Peek()])
                     stack.Pop();
                 else
-                {
                     return sign;
-                }
             }
             return null;
         }

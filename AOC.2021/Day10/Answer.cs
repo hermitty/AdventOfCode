@@ -10,56 +10,38 @@ namespace AOC._2021.Day10
         private readonly BracketValidator bracketValidator = new BracketValidator();
         public object Task1()
         {
-            var input = File.ReadAllLines("Day10/input.txt").ToArray();
-            var mistakes = 0;
-            var pointsDic = new Dictionary<char, int>
-            {
-                { '>', 25137 },
-                { ']', 57 },
-                { '}', 1197 },
-                { ')', 3 }
-            };
+            var result = File.ReadAllLines("Day10/input.txt").ToArray()
+                .Select(line => bracketValidator.GetCorruptedBracket(line))
+                .Where(coruptedBracket => coruptedBracket != null)
+                .Sum(coruptedBracket => coruptedBracket switch
+                {
+                    '>' => 25137,
+                    ']' => 57,
+                    '}' => 1197,
+                    ')' => 3
+                });
 
-            foreach (var line in input)
-            {
-                var coruptedBracket = bracketValidator.GetCorruptedBracket(line);
-                if (coruptedBracket != null)
-                    mistakes += pointsDic[(char)coruptedBracket]; ;
-            }
-
-            return mistakes; 
+            return result;
         }
 
         public object Task2()
         {
             var input = File.ReadAllLines("Day10/input.txt").ToArray();
-            var score = new List<long>();
-            var pointsDic = new Dictionary<char, int>
-            {
-                { '>', 4 },
-                { ']', 2 },
-                { '}', 3 },
-                { ')', 1 }
-            };
-          
-            foreach (var line in input)
-            {
-                if (bracketValidator.GetCorruptedBracket(line) != null)
-                    continue;
-
-                var incompleteBrackets = bracketValidator.GetIncompleteBrackets(line);
-                var point = 0L;
-
-                foreach (var bracket in incompleteBrackets)
+            var score = input
+                .Where(line => bracketValidator.GetCorruptedBracket(line) == null)
+                .Select(line => bracketValidator.GetIncompleteBrackets(line))
+                .Select(incompleteBracket => incompleteBracket
+                .Aggregate(0L, (sum, ch) => sum * 5 + ch switch
                 {
-                    point *= 5;
-                    point += pointsDic[bracket];
-                }
-                score.Add(point);
-            }
+                    '>' => 4,
+                    ']' => 2,
+                    '}' => 3,
+                    ')' => 1,
+                }))
+                .ToList();
 
             score.Sort();
-            var result = score[score.Count / 2];  
+            var result = score[score.Count / 2];
             return result;
         }
     }
